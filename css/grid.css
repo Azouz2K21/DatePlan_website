@@ -4,6 +4,13 @@
   padding: 0;
   margin: 0;
 }
+
+.name h4 a {
+  color: black;
+  text-decoration: none; /* This removes the default underline */
+}
+
+
 .row:after,
 .row:before {
   content: "";
