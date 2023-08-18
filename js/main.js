@@ -56,3 +56,41 @@ function openNav() {
 function closeNav() {
   $("#myNav").css("width", "0");
 }
+
+
+document.addEventListener("DOMContentLoaded", function () {
+  const emailForm = document.querySelector(".subscribe-form");
+  const emailInput = emailForm.querySelector(".form-input");
+  const errorMessage = document.querySelector(".error-message");
+  const successMessage = document.getElementById("success-message");
+
+  const subscribeButton = emailForm.querySelector(".subscribe-btn");
+
+  if (emailForm && emailInput && subscribeButton) {
+    subscribeButton.addEventListener("click", function (event) {
+      event.preventDefault();
+
+      const userEmail = emailInput.value;
+
+      if (userEmail) {
+        const usersCollection = firebase.firestore().collection("users"); // Use the firestore() method from Firebase
+
+        usersCollection.add({
+          email: userEmail
+        })
+        .then(() => {
+          console.log("Email saved to Firestore");
+          emailInput.value = "";
+          successMessage.textContent = "Email added successfully!";
+          setTimeout(() => {
+            successMessage.textContent = "";
+          }, 5000);
+        })
+        .catch(error => {
+          console.error("Error saving email to Firestore:", error);
+          errorMessage.textContent = "An error occurred. Please try again later.";
+        });
+      }
+    });
+  }
+});
